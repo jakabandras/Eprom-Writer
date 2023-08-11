@@ -12,6 +12,9 @@
 #include <menuIO/SSD1306AsciiOut.h> // include the lcd lib
 #include <ClickEncoder.h>
 #include <menuIO/clickEncoderIn.h>
+#include "main.h"
+
+using namespace Menu;
 
 String ssid = "";
 String password = "";
@@ -19,9 +22,6 @@ String password = "";
 WiFiUDP udp;
 
 // put function declarations here:
-int receiveFile(String fname);
-void readUdp();
-std::vector<String> splitString(const String &input, char delimiter);
 
 void setup() {
   // put your setup code here, to run once:
@@ -70,6 +70,8 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
+  readUdp();
+
 }
 
 // put function definitions here:
@@ -101,6 +103,24 @@ void readUdp() {
     const char *cmd = msgParts[0].c_str();
     if (strcmp(cmd, "file") == 0) {
       receiveFile(msgParts[1]);
+    } else if (strcmp(cmd, "dir") == 0) {
+      File dir = SPIFFS.open("/");
+      File file = dir.openNextFile();
+      while (file) {
+        udp.beginPacket(udp.remoteIP(), udp.remotePort());
+        udp.printf("%s\n", file.name());
+        udp.endPacket();
+        file = dir.openNextFile();
+      }
+      udp.beginPacket(udp.remoteIP(), udp.remotePort());
+      udp.printf("end\n");
+      udp.endPacket();
+    } else if (strcmp(cmd, "del") == 0) {
+      SPIFFS.remove(msgParts[1]);
+    } else if (strcmp(cmd, "rename") == 0) {
+      SPIFFS.rename(msgParts[1].c_str(), msgParts[2].c_str());
+    } else if (strcmp(cmd, "write")) {
+      writeEprom(msgParts[1]);
     }
   }
 }
@@ -122,4 +142,18 @@ std::vector<String> splitString(const String &input, char delimiter) {
     result.push_back(token);
     
     return result;
+}
+
+void writeEprom(String fname) {
+  File file = SPIFFS.open(fname, "r");
+  if (!file) {
+    Serial.println("Nem sikerült megnyitni a fájlt!");
+    return;
+  }
+  //Eprom írás
+  //Ez a rész még nem készült el
+}
+
+void sendByte(byte b) {
+  //Byte beírása az epromba
 }

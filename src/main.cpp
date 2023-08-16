@@ -5,16 +5,120 @@
 #include <WiFiUdp.h>
 #include <SPIFFS.h>
 #include <WifiClient.h>
-#include "SSD1306Ascii.h"
-#include "SSD1306AsciiWire.h"
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
 #include <ClickEncoder.h>
 #include <menu.h>
-#include <menuIO/SSD1306AsciiOut.h> // include the lcd lib
+#include <menuIO/adafruitGfxOut.h> // include the lcd lib
+#include <menuIO/chainStream.h>
 #include <ClickEncoder.h>
 #include <menuIO/clickEncoderIn.h>
 #include "main.h"
 
+#define I2C_ADDRESS 0x78
+#define RST_PIN -1
+// rotary encoder pins
+#define encA    2
+#define encB    3
+#define encBtn  4
+#define gfxWidth 84
+#define gfxHeight 48
+#define fontX 6
+//5
+#define fontY 9
+
+Adafruit_SSD1306 display(128, 64, &Wire, -1);
+int16_t last, value;
+ClickEncoder clickEncoder(encA,encB,encBtn);
+ClickEncoderStream encStream(clickEncoder,1);
+void timerIsr() {clickEncoder.service();}
+
+const colorDef<uint16_t> colors[6] MEMMODE={
+  {{WHITE,BLACK},{WHITE,BLACK,BLACK}},//bgColor
+  {{BLACK,WHITE},{BLACK,WHITE,WHITE}},//fgColor
+  {{BLACK,WHITE},{BLACK,WHITE,WHITE}},//valColor
+  {{BLACK,WHITE},{BLACK,WHITE,WHITE}},//unitColor
+  {{BLACK,WHITE},{WHITE,WHITE,WHITE}},//cursorColor
+  {{BLACK,WHITE},{WHITE,BLACK,BLACK}},//titleColor
+};
+
 using namespace Menu;
+
+result stpWifiPassword(eventMask e,navNode& nav, prompt &item) {
+  switch(e) {
+    case enterEvent:
+      Serial.println("Enter event");
+      break;
+    case exitEvent:
+      Serial.println("Exit event");
+      break;
+    case noEvent:
+      Serial.println("No event");
+      break;
+    default:
+      break;
+  }
+  return proceed;
+}
+
+result stpWifiSsid(eventMask e,navNode& nav, prompt &item) {
+  switch(e) {
+    case enterEvent:
+      Serial.println("Enter event");
+      break;
+    case exitEvent:
+      Serial.println("Exit event");
+      break;
+    case noEvent:
+      Serial.println("No event");
+      break;
+    default:
+      break;
+  }
+  return proceed;
+}
+
+MENU(subMenuWifi, "WiFi", Menu::doNothing, Menu::noEvent, Menu::wrapStyle
+  , FIELD(ssid, "SSID", stpWifiSsid, Menu::noEvent, Menu::noStyle)
+  , FIELD(password, "Password", stpWifiPassword, Menu::noEvent, Menu::noStyle)
+  , EXIT("<Back")
+);
+
+MENU(mnuEprom, "EPROM", Menu::doNothing, Menu::noEvent, Menu::wrapStyle
+  , OP("OP1", doNothing, Menu::noEvent)
+  , OP("OP2", doNothing, Menu::noEvent)
+  , OP("OP3", doNothing, Menu::noEvent)
+  , EXIT("<Back")
+);
+
+MENU(mnuFile,"FILE",Menu::doNothing,Menu::noEvent,Menu::wrapStyle
+  ,OP("OP1",doNothing,Menu::noEvent)
+  ,OP("OP2",doNothing,Menu::noEvent)
+  ,OP("OP3",doNothing,Menu::noEvent)
+  ,EXIT("<Back")
+);
+
+MENU(mnuSetup,"SETUP",Menu::doNothing,Menu::noEvent,Menu::wrapStyle
+  ,OP("OP1",doNothing,Menu::noEvent)
+  ,OP("OP2",doNothing,Menu::noEvent)
+  ,OP("OP3",doNothing,Menu::noEvent)
+  ,EXIT("<Back")
+);
+
+MENU(mnuAbout,"ABOUT",Menu::doNothing,Menu::noEvent,Menu::wrapStyle
+  ,OP("OP1",doNothing,Menu::noEvent)
+  ,OP("OP2",doNothing,Menu::noEvent)
+  ,OP("OP3",doNothing,Menu::noEvent)
+  ,EXIT("<Back")
+);
+
+MENU(mainMenu, "Main menu", Menu::doNothing, Menu::noEvent, Menu::wrapStyle
+  , SUBMENU(mnuEprom)
+  , OP("FILE", doNothing, Menu::noEvent)
+  , OP("SETUP", doNothing, Menu::noEvent)
+  , OP("ABOUT", doNothing, Menu::noEvent)
+  , EXIT("<Back")
+);
 
 String ssid = "";
 String password = "";
@@ -22,10 +126,24 @@ String password = "";
 WiFiUDP udp;
 
 // put function declarations here:
+#define MAX_DEPTH 2
+#define textScale 1
+MENU_OUTPUTS(out,MAX_DEPTH
+  ,ADAGFX_OUT(display,colors,fontX,fontY,{0,0,gfxWidth/fontX,gfxHeight/fontY})
+  ,NONE//no outputs
+  );
 
+MENU_INPUTS(in,&encStream,NULL,NULL);
+NAVROOT(nav,mainMenu,5,in,out);
 void setup() {
   // put your setup code here, to run once:
+  //Wire.begin();
+  Wire.begin(GPIO_NUM_21,GPIO_NUM_22);
+  Wire.setClock(400000L);
+  
+  display.begin(SSD1306_SWITCHCAPVCC, I2C_ADDRESS);
   Serial.begin(115200);
+
   if(!SPIFFS.begin(true)){
     Serial.println("Nem sikerült az SPIFFS inicializálása!");
     return;
@@ -71,7 +189,7 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
   readUdp();
-
+  nav.poll();
 }
 
 // put function definitions here:
@@ -156,4 +274,10 @@ void writeEprom(String fname) {
 
 void sendByte(byte b) {
   //Byte beírása az epromba
+  //Ez a rész még nem készült el
+
+}
+void readEprom() {
+  //Eprom olvasás
+  //Ez a rész még nem készült el
 }

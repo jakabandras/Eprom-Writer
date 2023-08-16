@@ -4,6 +4,11 @@
 
   (paper "A4")
 
+  (title_block
+    (date "2023-08-13")
+    (rev "1.1")
+  )
+
   (lib_symbols
     (symbol "74xx:74LS367" (pin_names (offset 1.016)) (in_bom yes) (on_board yes)
       (property "Reference" "U" (at -7.62 13.97 0)
@@ -1378,7 +1383,7 @@
   (symbol (lib_id "power:GNDREF") (at 80.01 71.12 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 3c2837d4-0f8a-4aa8-a14a-6d19ead0db73)
-    (property "Reference" "#PWR06" (at 80.01 77.47 0)
+    (property "Reference" "#PWR02" (at 80.01 77.47 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GNDREF" (at 80.01 75.2555 0)
@@ -1394,7 +1399,7 @@
     (instances
       (project "EpromWriter"
         (path "/01f26431-3776-438d-a17f-fa62f387fe06"
-          (reference "#PWR06") (unit 1)
+          (reference "#PWR02") (unit 1)
         )
       )
     )
@@ -1468,7 +1473,7 @@
   (symbol (lib_id "power:VCC") (at 20.32 29.21 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid ec747a08-93b6-4a65-abad-bd2eb3a96169)
-    (property "Reference" "#PWR03" (at 20.32 33.02 0)
+    (property "Reference" "#PWR01" (at 20.32 33.02 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "VCC" (at 20.32 25.7081 0)
@@ -1484,7 +1489,7 @@
     (instances
       (project "EpromWriter"
         (path "/01f26431-3776-438d-a17f-fa62f387fe06"
-          (reference "#PWR03") (unit 1)
+          (reference "#PWR01") (unit 1)
         )
       )
     )
@@ -1518,7 +1523,7 @@
   (symbol (lib_id "power:GNDREF") (at 80.01 120.65 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid f5f1e12f-3cfd-403d-a51d-8c38758051e0)
-    (property "Reference" "#PWR07" (at 80.01 127 0)
+    (property "Reference" "#PWR03" (at 80.01 127 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GNDREF" (at 80.01 124.7855 0)
@@ -1534,7 +1539,7 @@
     (instances
       (project "EpromWriter"
         (path "/01f26431-3776-438d-a17f-fa62f387fe06"
-          (reference "#PWR07") (unit 1)
+          (reference "#PWR03") (unit 1)
         )
       )
     )
@@ -1585,19 +1590,53 @@
     )
   )
 
-  (sheet (at -66.04 48.26) (size 52.07 53.34) (fields_autoplaced)
+  (sheet (at -39.37 88.9) (size 21.59 12.7) (fields_autoplaced)
+    (stroke (width 0.1524) (type solid))
+    (fill (color 0 0 0 0.0000))
+    (uuid 08bd5169-7f9e-453f-9db1-56b32b83f041)
+    (property "Sheetname" "Jumpers" (at -39.37 88.1884 0)
+      (effects (font (size 1.27 1.27)) (justify left bottom))
+    )
+    (property "Sheetfile" "Jumpers.kicad_sch" (at -39.37 102.1846 0)
+      (effects (font (size 1.27 1.27)) (justify left top))
+    )
+    (instances
+      (project "EpromWriter"
+        (path "/01f26431-3776-438d-a17f-fa62f387fe06" (page "3"))
+      )
+    )
+  )
+
+  (sheet (at -66.04 48.26) (size 22.86 13.97) (fields_autoplaced)
     (stroke (width 0.1524) (type solid))
     (fill (color 0 0 0 0.0000))
     (uuid 0e6ce61c-b925-42e6-a3bf-cbf3275d6986)
-    (property "Sheetname" "Untitled Sheet" (at -66.04 47.5484 0)
+    (property "Sheetname" "PSU for Eprom Writer" (at -66.04 47.5484 0)
       (effects (font (size 1.27 1.27)) (justify left bottom))
     )
-    (property "Sheetfile" "untitled.kicad_sch" (at -66.04 102.1846 0)
+    (property "Sheetfile" "PSU_for_Writer.kicad_sch" (at -66.04 62.8146 0)
       (effects (font (size 1.27 1.27)) (justify left top))
     )
     (instances
       (project "EpromWriter"
         (path "/01f26431-3776-438d-a17f-fa62f387fe06" (page "2"))
+      )
+    )
+  )
+
+  (sheet (at -33.02 48.26) (size 17.78 13.97) (fields_autoplaced)
+    (stroke (width 0.1524) (type solid))
+    (fill (color 0 0 0 0.0000))
+    (uuid be242336-b291-4584-bacf-8eef4b70cd10)
+    (property "Sheetname" "MCU" (at -33.02 47.5484 0)
+      (effects (font (size 1.27 1.27)) (justify left bottom))
+    )
+    (property "Sheetfile" "mcu.kicad_sch" (at -33.02 62.8146 0)
+      (effects (font (size 1.27 1.27)) (justify left top))
+    )
+    (instances
+      (project "EpromWriter"
+        (path "/01f26431-3776-438d-a17f-fa62f387fe06" (page "4"))
       )
     )
   )

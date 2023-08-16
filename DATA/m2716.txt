@@ -1,0 +1,25 @@
+1. Kezdetben ellenőrizze, hogy az EPROM megfelelően van-e csatlakoztatva a programozó eszközhöz.
+2. Ellenőrizze, hogy a programozó eszköz megfelelően van-e összekötve a számítógéppel vagy a vezérlővel.
+3. Nyissa meg a programozó szoftvert a számítógépen vagy a vezérlőn.
+
+4. Az alábbi lépések az EPROM memóriájának programozását mutatják be:
+
+   A. Címbeállítás:
+      - Állítsa be a címet, ahol adatait szeretné tárolni. Az M2716 esetében a címek 0-tól 16383-ig terjednek (16 KB memória).
+      - Ezt a címet bináris vagy hexadecimális formátumban adhatja meg a programozó szoftverben.
+
+   B. Adatbeállítás:
+      - Állítsa be az adatot, amit a memóriába szeretne írni. Az adatot szintén bináris vagy hexadecimális formátumban kell megadni.
+
+   C. Ellenőrzés:
+      - Ellenőrizze, hogy a megadott címre és adatra vonatkozóan nincs-e konfliktus vagy hiba a programozó szoftverben.
+
+   D. Programozás:
+      - Indítsa el a programozást a szoftverben. A programozó eszköz az adott címre fogja írni az adatot az EPROM memóriájában.
+
+   E. Ellenőrzés:
+      - Végezze el az ellenőrzést, hogy megbizonyosodjon arról, hogy az adat sikeresen bekerült-e a memóriába. Ezt a funkciót a programozó szoftver is biztosítja.
+
+5. Ha minden sikeres volt, zárja be a programozó szoftvert és távolítsa el az EPROM chipet a programozó eszközből.
+
+Fontos megjegyezni, hogy az EPROM memóriájának programozása a pontos eszköz és szoftver függvénye. Emellett a chipnek speciális törlési eljáráson is át kell esnie, mielőtt új adatot írhatunk rá. Ezenkívül a fenti algoritmus csak egy általános útmutató, és az efféle eszközök és folyamatok részletes ismerete nélkül nem ajánlott egyedül végrehajtani.
